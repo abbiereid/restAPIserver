@@ -57,7 +57,7 @@
                     header('Content-Type: application/json'); //setting the header to JSON
                     echo json_encode($response); //returning response array as JSON
                 } else {
-                    http_response_code(404);
+                    http_response_code(204); //no content 
                 }
             }
 
