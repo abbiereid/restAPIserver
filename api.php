@@ -74,6 +74,7 @@
             //checking for valid parameters
             if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
+                echo json_encode(array('error' => 'Missing parameters'));
             } else {
 
                 $sql = "INSERT INTO apiTable (oid, name, comment) VALUES (?,?,?)";
