@@ -33,7 +33,7 @@
         
         function handleGet() {
             //accessing get parameters
-            $oid = $_GET['oid'];
+            $oid = isset($_GET['oid']) ? $_GET['oid'] : null;
             //---------------------------------------------
 
             //checking if oid is empty
@@ -66,9 +66,9 @@
 
         function handlePost() {
             //accessing post parameters
-            $oid = $_POST['oid'];
-            $name = $_POST['name'];
-            $comment = $_POST['comment'];
+            $oid = isset($_POST['oid']) ? $_POST['oid'] : null;
+            $name = isset($_POST['name']) ? $_POST['name'] : null;
+            $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
             //---------------------------------------------------
 
             //checking for valid parameters
@@ -115,4 +115,5 @@
 
     $api = new API();
     $api->handleRequest();
+
 ?>
