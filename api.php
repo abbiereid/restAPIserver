@@ -4,9 +4,9 @@
 
         function __construct() {
             $host = 'localhost';
-            $user = 'root';
-            $password = '02122003';
-            $database = 'api';
+            $user = 'ar1382_main';
+            $password = 'myAPIkey';
+            $database = 'ar1382_api';
 
             $this->conn = new mysqli($host, $user, $password, $database);
 
@@ -42,7 +42,7 @@
             } else {
 
                 //forming the sql and binding parameters seperately, to avoid sql injection
-                $sql = "SELECT * FROM apitable WHERE oid = ?";
+                $sql = "SELECT * FROM apiTable WHERE oid = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param('s', $oid);
                 $stmt->execute();
@@ -76,8 +76,8 @@
                 http_response_code(400);
             } else {
 
-                $sql = "INSERT INTO apitable (oid, name, comment) VALUES (?,?,?)";
-                $result = $this->conn->prepare($sql); //sql statement sent to database separate from the parameters
+                $sql = "INSERT INTO apiTable (oid, name, comment) VALUES (?,?,?)";
+                $stmt = $this->conn->prepare($sql); //sql statement sent to database separate from the parameters
                 $stmt->bind_param('sss', $oid, $name, $comment); //binding parameters to placeholders , ensuring they're viewed as values now, not sql.
                 $stmt->execute();
 
@@ -86,7 +86,7 @@
                     http_response_code(201); //created
 
                     //fetching id of newly created record
-                    $sql = "SELECT id FROM apitable WHERE oid = ?";
+                    $sql = "SELECT id FROM apiTable WHERE oid = ?";
                     $stmt = $this->conn->prepare($sql);
                     $stmt->bind_param('s', $oid);
                     $stmt->execute();
