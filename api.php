@@ -4,9 +4,9 @@
 
         function __construct() {
             $host = 'localhost';
-            $user = 'ar1382_main';
-            $password = 'myAPIkey';
-            $database = 'ar1382_api';
+            $user = 'root';
+            $password = '02122003';
+            $database = 'apidb';
 
             $this->conn = new mysqli($host, $user, $password, $database);
 
@@ -33,7 +33,7 @@
         
         function handleGet() {
             //accessing get parameters
-            $oid = isset($_GET['oid']) ? $_GET['oid'] : null;
+            $oid = $_GET['oid'];
             //---------------------------------------------
 
             //checking if oid is empty
@@ -66,9 +66,9 @@
 
         function handlePost() {
             //accessing post parameters
-            $oid = isset($_POST['oid']) ? $_POST['oid'] : null;
-            $name = isset($_POST['name']) ? $_POST['name'] : null;
-            $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
+            $oid = $_POST['oid'];
+            $name = $_POST['name'];
+            $comment = $_POST['comment'];
             //---------------------------------------------------
 
             //checking for valid parameters
