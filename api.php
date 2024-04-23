@@ -57,4 +57,7 @@
         }
 
     }
+
+    $api = new API();
+    $api->handleRequest();
 ?>
