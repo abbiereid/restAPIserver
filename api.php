@@ -32,7 +32,7 @@
         }
         
         function handleGet() {
-           
+            
         }
 
         function handlePost() {
@@ -46,6 +46,7 @@
             if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
             } else {
+
                 $sql = "INSERT INTO apitable (oid, name, comment) VALUES (?,?,?)";
                 $result = $this->conn->prepare($sql); //sql statement sent to database separate from the parameters
                 $stmt->bind_param('sss', $oid, $name, $comment); //binding parameters to placeholders , ensuring they're viewed as values now, not sql.
@@ -60,7 +61,7 @@
                     $stmt = $this->conn->prepare($sql);
                     $stmt->bind_param('s', $oid);
                     $stmt->execute();
-                    
+
                     //-------------------------------------------
                     //returning id as JSON 
 
