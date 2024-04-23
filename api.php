@@ -8,10 +8,10 @@
             $password = '02122003';
             $database = 'api';
 
-            $this->$conn = new mysqli($host, $user, $password, $database);
+            $this->conn = new mysqli($host, $user, $password, $database);
 
-            if($this->$conn->connect_error){
-                die('Connection failed: ' . $conn->connect_error);
+            if($this->conn->connect_error){
+                die('Connection failed: ' . $this->conn->connect_error);
             }
 
         }
