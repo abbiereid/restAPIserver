@@ -30,7 +30,31 @@
                     break;
             }
         }
+        
+        function handleGet() {
+           
+        }
 
+        function handlePost() {
+            $oid = $_POST['oid'];
+            $name = $_POST['name'];
+            $comment = $_POST['comment'];
+
+            if(empty($oid) || empty($name) || empty($comment)) {
+                http_response_code(400);
+            } else {
+                $sql = "INSERT INTO apitable (oid, name, comment) VALUES (?,?,?)";
+                $result = $this->conn->prepare($sql);
+                $stmt->bind_param('sss', $oid, $name, $comment);
+                $stmt->execute();
+
+                if($stmt->affected_rows > 0) {
+                    http_response_code(201);
+                } else {
+                    http_response_code(500);
+                }
+            }
+        }
 
     }
 ?>
