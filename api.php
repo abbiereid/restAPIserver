@@ -8,9 +8,9 @@
             $password = '02122003';
             $database = 'api';
 
-            $conn = new mysqli($host, $user, $password, $database);
+            $this->$conn = new mysqli($host, $user, $password, $database);
 
-            if($conn->connect_error){
+            if($this->$conn->connect_error){
                 die('Connection failed: ' . $conn->connect_error);
             }
 
@@ -32,7 +32,31 @@
         }
         
         function handleGet() {
-            
+            $oid = $_GET['oid'];
+
+            if(empty($oid)) {
+                http_response_code(400);
+            } else {
+                $sql = "SELECT * FROM apitable WHERE oid = ?";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param('s', $oid);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
+                if($result->num_rows > 0) {
+                    $response = array();
+                    while($row = $result->fetch_assoc()) {
+                        $response[] = $row;
+                    }
+
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
+                } else {
+                    http_response_code(404);
+                }
+            }
+
+
         }
 
         function handlePost() {
