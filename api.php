@@ -36,22 +36,26 @@
         }
 
         function handlePost() {
+            //accessing post parameters
             $oid = $_POST['oid'];
             $name = $_POST['name'];
             $comment = $_POST['comment'];
+            //---------------------------------------------------
 
+            //checking for valid parameters
             if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
             } else {
                 $sql = "INSERT INTO apitable (oid, name, comment) VALUES (?,?,?)";
-                $result = $this->conn->prepare($sql);
-                $stmt->bind_param('sss', $oid, $name, $comment);
+                $result = $this->conn->prepare($sql); //sql statement sent to database separate from the parameters
+                $stmt->bind_param('sss', $oid, $name, $comment); //binding parameters to placeholders , ensuring they're viewed as values now, not sql.
                 $stmt->execute();
 
+
                 if($stmt->affected_rows > 0) {
-                    http_response_code(201);
+                    http_response_code(201); //created
                 } else {
-                    http_response_code(500);
+                    http_response_code(500); //database error
                 }
             }
         }
