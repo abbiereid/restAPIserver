@@ -54,6 +54,27 @@
 
                 if($stmt->affected_rows > 0) {
                     http_response_code(201); //created
+
+                    //fetching id of newly created record
+                    $sql = "SELECT id FROM apitable WHERE oid = ?";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bind_param('s', $oid);
+                    $stmt->execute();
+                    
+                    //-------------------------------------------
+                    //returning id as JSON 
+
+                    $result = $stmt->get_result();
+                    if ($result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        $response = array('id' => $row['id']);
+                        
+                        header('Content-Type: application/json');
+                        echo json_encode($response);
+                    } else {
+                        http_response_code(500); // database error
+                    }
+
                 } else {
                     http_response_code(500); //database error
                 }
