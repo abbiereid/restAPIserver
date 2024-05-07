@@ -32,32 +32,27 @@
         }
         
         function handleGet() {
-            //accessing get parameters
             $oid = $_GET['oid'];
-            //---------------------------------------------
 
-            //checking if oid is empty
             if(empty($oid)) {
                 http_response_code(400);
             } else {
-
-                //forming the sql and binding parameters seperately, to avoid sql injection
                 $sql = "SELECT * FROM apiTable WHERE oid = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param('s', $oid);
                 $stmt->execute();
 
                 $result = $stmt->get_result();
-                if($result->num_rows > 0) { //if more than 0 rows are returned
+                if($result->num_rows > 0) { 
                     $response = array();
                     while($row = $result->fetch_assoc()) {
-                        $response[] = $row; //adding each row to the response array
+                        $response[] = $row; 
                     }
 
-                    header('Content-Type: application/json'); //setting the header to JSON
-                    echo json_encode($response); //returning response array as JSON
+                    header('Content-Type: application/json'); 
+                    echo json_encode($response); 
                 } else {
-                    http_response_code(204); //no content 
+                    http_response_code(204);
                 }
             }
 
@@ -65,35 +60,28 @@
         }
 
         function handlePost() {
-            //accessing post parameters
             $oid = $_POST['oid'];
             $name = $_POST['name'];
             $comment = $_POST['comment'];
-            //---------------------------------------------------
-
-            //checking for valid parameters
+        
             if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
-                echo json_encode(array('error' => 'Missing parameters'));
             } else {
 
                 $sql = "INSERT INTO apiTable (oid, name, comment) VALUES (?,?,?)";
-                $stmt = $this->conn->prepare($sql); //sql statement sent to database separate from the parameters
-                $stmt->bind_param('sss', $oid, $name, $comment); //binding parameters to placeholders , ensuring they're viewed as values now, not sql.
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param('sss', $oid, $name, $comment); 
                 $stmt->execute();
 
 
                 if($stmt->affected_rows > 0) {
-                    http_response_code(201); //created
+                    http_response_code(201);
 
-                    //fetching id of newly created record
                     $sql = "SELECT id FROM apiTable WHERE oid = ?";
                     $stmt = $this->conn->prepare($sql);
                     $stmt->bind_param('s', $oid);
                     $stmt->execute();
 
-                    //-------------------------------------------
-                    //returning id as JSON 
 
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
@@ -103,13 +91,17 @@
                         header('Content-Type: application/json');
                         echo json_encode($response);
                     } else {
-                        http_response_code(500); // database error
+                        http_response_code(500);
                     }
 
                 } else {
-                    http_response_code(500); //database error
+                    http_response_code(500); 
                 }
             }
+        }
+
+        function __destruct() {
+            $this->conn->close();
         }
 
     }
