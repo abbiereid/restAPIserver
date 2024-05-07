@@ -37,7 +37,7 @@
             if($oid == null) {
                 http_response_code(400);
             } else {
-                $sql = "SELECT * FROM apiTable WHERE oid = ?";
+                $sql = "SELECT id, DATE_FORMAT(date, '%d %M %Y') AS date, name, comment FROM apiTable WHERE oid = ? ORDER BY date ASC";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param('s', $oid);
                 $stmt->execute();
