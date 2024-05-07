@@ -4,9 +4,9 @@
 
         function __construct() {
             $host = 'localhost';
-            $user = 'root';
-            $password = '02122003';
-            $database = 'apidb';
+            $user = 'ar1382_main';
+            $password = '^fGrpYzM#+Y(';
+            $database = 'ar1382_api';
 
             $this->conn = new mysqli($host, $user, $password, $database);
 
@@ -32,7 +32,7 @@
         }
         
         function handleGet() {
-            $oid = $_GET['oid'];
+            $oid = isset($_GET['oid']);
 
             if(empty($oid)) {
                 http_response_code(400);
@@ -60,9 +60,9 @@
         }
 
         function handlePost() {
-            $oid = $_POST['oid'];
-            $name = $_POST['name'];
-            $comment = $_POST['comment'];
+            $oid = isset($_POST['oid']);
+            $name = isset($_POST['name']);
+            $comment = isset($_POST['comment']);
         
             if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
