@@ -32,7 +32,7 @@
         }
         
         function handleGet() {
-            $oid = isset($_GET['oid']) ? null;
+            $oid = isset($_GET['oid']) ? $_GET['oid'] : null;
 
             if($oid == null) {
                 http_response_code(400);
@@ -60,9 +60,9 @@
         }
 
         function handlePost() {
-            $oid = isset($_POST['oid']) ? null;
-            $name = isset($_POST['name']) ? null;
-            $comment = isset($_POST['comment']) ? null;
+            $oid = isset($_POST['oid']) ? $_POST['oid'] : null;
+            $name = isset($_POST['name']) ? $_POST['name'] : null;
+            $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
         
             if($oid == null || $name == null || $comment == null) {
                 http_response_code(400);
