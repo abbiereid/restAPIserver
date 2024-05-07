@@ -32,9 +32,9 @@
         }
         
         function handleGet() {
-            $oid = isset($_GET['oid']) ? $_GET['oid'] : null;
+            $oid = $_GET['oid'];
 
-            if($oid == null) {
+            if(empty($oid)) {
                 http_response_code(400);
             } else {
                 $sql = "SELECT * FROM apiTable WHERE oid = ?";
@@ -60,19 +60,17 @@
         }
 
         function handlePost() {
-            $oid = isset($_POST['oid']) ? $_POST['oid'] : null;
-            $name = isset($_POST['name']) ? $_POST['name'] : null;
-            $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
+            $oid = $_POST['oid'];
+            $name = $_POST['name'];
+            $comment = $_POST['comment'];
         
-            if($oid == null || $name == null || $comment == null) {
+            if(empty($oid) || empty($name) || empty($comment)) {
                 http_response_code(400);
             } else {
-
                 $sql = "INSERT INTO apiTable (oid, name, comment) VALUES (?,?,?)";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bind_param('sss', $oid, $name, $comment); 
                 $stmt->execute();
-
 
                 if($stmt->affected_rows > 0) {
                     http_response_code(201);
@@ -81,7 +79,6 @@
                     $stmt = $this->conn->prepare($sql);
                     $stmt->bind_param('s', $oid);
                     $stmt->execute();
-
 
                     $result = $stmt->get_result();
                     if ($result->num_rows > 0) {
