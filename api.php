@@ -32,9 +32,9 @@
         }
         
         function handleGet() {
-            $oid = isset($_GET['oid']);
+            $oid = isset($_GET['oid']) || null;
 
-            if(empty($oid)) {
+            if($oid == null) {
                 http_response_code(400);
             } else {
                 $sql = "SELECT * FROM apiTable WHERE oid = ?";
@@ -60,11 +60,11 @@
         }
 
         function handlePost() {
-            $oid = isset($_POST['oid']);
-            $name = isset($_POST['name']);
-            $comment = isset($_POST['comment']);
+            $oid = isset($_POST['oid']) || null;
+            $name = isset($_POST['name']) || null;
+            $comment = isset($_POST['comment']) || null;
         
-            if(empty($oid) || empty($name) || empty($comment)) {
+            if($oid == null || $name == null || $comment == null) {
                 http_response_code(400);
             } else {
 
