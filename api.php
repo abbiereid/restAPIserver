@@ -2,7 +2,7 @@
     class API {
         private $conn;
 
-        function __construct() {
+        public function __construct() {
             $host = 'localhost';
             $user = 'ar1382_main';
             $password = '^fGrpYzM#+Y(';
@@ -11,12 +11,12 @@
             $this->conn = new mysqli($host, $user, $password, $database);
 
             if($this->conn->connect_error){
-                die('Connection failed: ' . $this->conn->connect_error);
+                http_response_code(500);
+                die();
             }
-
         }
 
-        function handleRequest() {
+        public function handleRequest() {
             $method = $_SERVER['REQUEST_METHOD'];
             switch($method) {
                 case 'GET':
@@ -31,7 +31,7 @@
             }
         }
         
-        function handleGet() {
+        public function handleGet() {
             $oid = isset($_GET['oid']) ? $_GET['oid'] : null;
 
             if($oid == null) {
@@ -44,6 +44,8 @@
 
                 $result = $stmt->get_result();
                 if($result->num_rows > 0) { 
+                    http_response_code(200);
+
                     $response = array();
                 
                     while($row = $result->fetch_assoc()) {
@@ -59,11 +61,12 @@
             }
         }
 
-        function handlePost() {
+        public function handlePost() {
             $oid = isset($_POST['oid']) && trim($_POST['oid']) !== '' ? $_POST['oid'] : null;
             $name = isset($_POST['name']) && trim($_POST['name']) !== '' ? $_POST['name'] : null;
             $comment = isset($_POST['comment']) && trim($_POST['comment']) !== '' ? $_POST['comment'] : null;
         
+
             if($oid == null || $name == null || $comment == null) {
                 http_response_code(400);
             } else {
@@ -78,30 +81,19 @@
                     if($stmt->affected_rows > 0) {
                         http_response_code(201);
 
-                        $sql = "SELECT id FROM apiTable WHERE oid = ?";
-                        $stmt = $this->conn->prepare($sql);
-                        $stmt->bind_param('s', $oid);
-                        $stmt->execute();
-
-                        $result = $stmt->get_result();
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $response = array('id' => $row['id']);
-                            
-                            header('Content-Type: application/json');
-                            echo json_encode($response);
-                        } else {
-                            http_response_code(500);
-                        }
-
+                        $id = $this->conn->insert_id;
+                        $response = array('id' => $id);
+                
+                        header('Content-Type: application/json');
+                        echo json_encode($response);
                     } else {
-                        http_response_code(500); 
+                        http_response_code(500);
                     }
                 }
+            }
         }
-    }
 
-        function __destruct() {
+        public function __destruct() {
             $this->conn->close();
         }
 
